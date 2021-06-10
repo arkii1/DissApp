@@ -12,7 +12,7 @@ Camera::Camera()
 	moveSpeed = 5.0f;
 	turnSpeed = 1.0f;
 
-	Update();
+	UpdateLocalVectors();
 }
 
 Camera::Camera(glm::vec3 _position, glm::vec3 _up, GLfloat _yaw, GLfloat _pitch, GLfloat _moveSpeed, GLfloat _turnSpeed)
@@ -27,11 +27,10 @@ Camera::Camera(glm::vec3 _position, glm::vec3 _up, GLfloat _yaw, GLfloat _pitch,
 	moveSpeed = _moveSpeed;
 	turnSpeed = _turnSpeed;
 
-	Update();
+	UpdateLocalVectors();
 }
 
-// Changes position based on input
-void Camera::KeyControl(bool* keys, GLfloat deltaTime) 
+void Camera::HandleKeyMovement(bool* keys, GLfloat deltaTime) 
 {
 	if (keys[GLFW_KEY_W])
 	{
@@ -54,7 +53,7 @@ void Camera::KeyControl(bool* keys, GLfloat deltaTime)
 	}
 }
 
-void Camera::MouseControl(GLfloat xChange, GLfloat yChange)
+void Camera::HandleMouseMovement(GLfloat xChange, GLfloat yChange)
 {
 	xChange *= turnSpeed;
 	yChange *= turnSpeed;
@@ -72,7 +71,7 @@ void Camera::MouseControl(GLfloat xChange, GLfloat yChange)
 		pitch = -89.0f;
 	}
 
-	Update();
+	UpdateLocalVectors();
 }
 
 glm::mat4 Camera::CalculateViewMatrix()
@@ -80,12 +79,12 @@ glm::mat4 Camera::CalculateViewMatrix()
 	return glm::lookAt(position, position + front, up);
 }
 
-// Updates variables
-void Camera::Update()
+void Camera::UpdateLocalVectors()
 {
 	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 	front.y = sin(glm::radians(pitch));
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+
 	glm::normalize(front);
 
 	right = glm::normalize(glm::cross(front, worldUp));

@@ -5,17 +5,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <GLFW/glfw3.h>
 
-
-
 class Camera
 {
 public:
 	Camera();
 	Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _yaw, GLfloat _pitch, GLfloat _moveSpeed, GLfloat _turnSpeed);
 	
-	void KeyControl(bool* keys, GLfloat deltaTime);
+	void HandleKeyMovement(bool* keys, GLfloat deltaTime);
 
-	void MouseControl(GLfloat xChange, GLfloat yChange);
+	void HandleMouseMovement(GLfloat xChange, GLfloat yChange);
 
 	glm::mat4 CalculateViewMatrix();
 
@@ -36,6 +34,6 @@ private:
 	GLfloat moveSpeed;
 	GLfloat turnSpeed;
 
-	void Update();
+	void UpdateLocalVectors();
 };
 
